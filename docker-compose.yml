@@ -32,10 +32,9 @@ services:                           # 실행할 컨테이너(서비스) 목록 �
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}            # 선택: 앱용 사용자 비밀번호 (.env에서 읽어옴)
       - TZ=Asia/Seoul                               # 컨테이너 시간대 설정
     command: [                                      # mysqld 실행 옵션 추가
-
-      "--default-authentication-plugin=mysql_native_password",  # 클라이언트 호환성 좋음
-      "--character-set-server=utf8mb4",                          # 기본 문자셋을 utf8mb4로(이모지 포함)
-      "--collation-server=utf8mb4_0900_ai_ci"                    # MySQL 8 권장 콜레이션
+      "--character-set-server=utf8mb4",             # 기본 문자셋을 utf8mb4로(이모지 포함)
+      "--collation-server=utf8mb4_0900_ai_ci",      # MySQL 8 권장 콜레이션
+      "--mysql-native-password=ON"                  # MySQL 8.4에서는 이렇게 설정
     ]
     volumes:
       - db_data:/var/lib/mysql                      # DB 파일을 도커 볼륨에 영구 보관
