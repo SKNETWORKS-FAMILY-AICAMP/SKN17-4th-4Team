@@ -1,0 +1,21 @@
+{% load static %}
+<header class="nav">
+    <div class="container nav__inner">
+      <a href="{% url 'index' %}" class="brand">
+        <img src="{% static 'img/logo.png' %}" alt="로고" class="logo" />베이비가이드
+      </a>
+      <nav class="nav__links" aria-label="주요 링크">
+        <a href="{% url 'dodam' %}">도담이</a>
+        
+        {% if user.is_authenticated %}
+          <!-- 로그인 후 -->
+          <span style="color: #333; font-weight: 600;">{{ user.username }}님</span>
+          <a class="btn btn--ghost" href="{% url 'logout' %}">로그아웃</a>
+        {% else %}
+          <!-- 로그인 전 -->
+          <a class="btn btn--ghost" href="{% url 'signup' %}">회원가입</a>
+          <a class="btn btn--primary" href="{% url 'login' %}">로그인</a>
+        {% endif %}
+      </nav>
+    </div>
+  </header>

@@ -1,0 +1,104 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>베이비가이드</title>
+
+    <!-- 정리된 링크들 -->
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    {% include 'partials/header.html' %}
+
+  <!-- 메인 -->
+  <main class="login">
+    <div class="container login__grid">
+      <!-- 왼쪽 카드 -->
+      <section class="login__card">
+        <h1 class="login__title">로그인</h1>
+        <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+                  <label for="email" class="login__label">아이디 또는 이메일</label>
+                  <input id="email" type="text" name="username" class="login__input" placeholder="아이디 또는 이메일" required />
+
+                  <label for="password" class="login__label">비밀번호</label>
+                  <div class="login__pw">
+                    <input id="password" type="password" name="password" class="login__input" placeholder="비밀번호 입력" required />
+                    <button type="button" class="login__pw-toggle" aria-label="비밀번호 보기">👁️</button>
+                  </div>
+
+                  <button type="submit" class="btn btn--cta login__submit">로그인</button>
+                  {% if error %}
+            <p style="color:red; margin-top:12px;">{{ error }}</p>
+          {% endif %}
+          <div class="login__links">
+            <a href="{% url 'signup' %}" class="login__link">회원가입</a>
+            <a href="{% url 'password_reset' %}" class="login__link">비밀번호 찾기</a>
+          </div>
+        </form>
+      </section>
+
+      <!-- 오른쪽 이미지 -->
+      <figure class="login__figure">
+        <img src="{% static 'img/login_blue.jpg' %}" alt="아기 슬리퍼 이미지" class="login__image" />
+      </figure>
+    </div>
+  </main>
+
+  {% include 'partials/footer.html' %}
+
+  <!-- 모달 -->
+  <div id="appModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal__backdrop" data-close-modal></div>
+    <div class="modal__panel">
+      <h3 id="modalTitle" class="modal__title">알림</h3>
+      <div id="modalMessage" class="modal__body">메시지</div>
+      <div class="modal__actions">
+        <button type="button" class="modal__btn" data-close-modal>확인</button>
+      </div>
+    </div>
+  </div>
+    
+    <script>
+      // 비밀번호 보기 토글
+      const pw = document.getElementById('password');
+      const toggle = document.querySelector('.login__pw-toggle');
+      toggle.addEventListener('click', () => {
+        pw.type = pw.type === 'password' ? 'text' : 'password';
+      });
+
+      // 모달 관련
+      {% if show_modal %}
+      document.addEventListener('DOMContentLoaded', () => {
+        const modal = document.querySelector('#appModal');
+        const modalMsg = document.querySelector('#modalMessage');
+        const modalTitle = document.querySelector('#modalTitle');
+
+        function openModal(message, title='알림') {
+          modalTitle.textContent = title;
+          modalMsg.textContent = message;
+          modal.classList.add('modal--open');
+          document.documentElement.style.overflow = 'hidden';
+        }
+        function closeModal() {
+          modal.classList.remove('modal--open');
+          document.documentElement.style.overflow = '';
+        }
+        modal.addEventListener('click', (e) => {
+          if (e.target.matches('[data-close-modal]')) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') closeModal();
+        });
+
+        // 페이지 로드 시 자동으로 팝업 띄우기
+        openModal('{{ error }}');
+      });
+      {% endif %}
+    </script>
+  </body>
+</html>

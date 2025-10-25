@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>베이비가이드</title>
+
+    <!-- 정리된 링크들 -->
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    {% include 'partials/header.html' %}
+
+    <!-- 타이틀 띠 -->
+    <section class="chat__titlebar">
+      <div class="chat__titlebar-inner">
+        <h1 class="chat__title">
+          도담이
+          <img src="{% static 'img/dodam_image.png' %}" alt="도담이 이미지" class="chat__image" />
+        </h1>
+        <button id="saveTextBtn" class="btn btn--input_textfile">텍스트 파일로 저장</button>
+      </div>
+    </section>
+
+    <!-- 메시지 영역 -->
+    <main class="chat">
+      <ol class="chat__messages" aria-live="polite">
+        <!-- 사용자 질문 (오른쪽) -->
+        <li class="msg msg--user">
+          <div class="bubble-wrapper">
+            <div class="bubble">
+              아이가 이유식을 먹지 않는데 어떻게 해야 돼?
+            </div>
+      <div class="container chat__titlebar-inner">
+        </li>
+
+        <!-- 봇 답변 (왼쪽) -->
+        <li class="msg msg--bot">
+          <div class="bubble-wrapper">
+            <div class="bubble">
+              <p><strong>아이가 이유식을 먹지 않는 이유</strong>는 여러 가지가 있을 수 있어요. 먼저, 아직 익숙하지 않은
+                질감/맛 때문에 거부감이 생길 수 있고, 수유 패턴 변화도 원인이 될 수 있습니다. 아래 방법을 순서대로
+                시도해 보세요.</p>
+              <ol>
+                <li><strong>익숙한 분위기</strong> 만들기: 같은 자리/의자/그릇/수저를 꾸준히 사용합니다.</li>
+                <li><strong>아주 소량부터</strong>: 한두 숟가락으로 시작해 성공 경험을 쌓게 합니다.</li>
+                <li><strong>질감 단계적 조절</strong>: 너무 되거나 묽지 않게, 한 번에 한 가지만 바꿔봅니다.</li>
+                <li><strong>수유-이유식 간격</strong>: 공복에 너무 배고프지 않도록 1.5~2시간 간격을 맞춥니다.</li>
+                <li><strong>긍정적 신호에 보상</strong>: 삼키기/입 열기 등 신호에 칭찬과 미소로 반응합니다.</li>
+              </ol>
+              <p>1~2주 동안 위 과정을 기록해 보며 반응을 관찰하세요. 구토/체중감소/탈수 등 이상 신호가 있으면
+                소아과 상담이 필요합니다.</p>
+            </div>
+          </div>
+        </li>
+
+        <!-- 사용자 타이핑 인디케이터 -->
+        <li class="msg msg--user msg--typing">
+          <div class="bubble-wrapper">
+            <div class="bubble typing-bubble">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+          </div>
+        </li>
+      </ol>
+    </main>
+
+    <!-- 입력창 -->
+    <form class="composer" action="#" method="post">
+      <label class="sr-only" for="composerInput">메시지 입력</label>
+      <input id="composerInput" class="composer__input" type="text" placeholder="메시지를 입력하세요..." autocomplete="off" required />
+      <button type="submit" class="btn btn--primary composer__send">보내기</button>
+    </form>
+
+    <!-- 팝업 모달 -->
+    <div id="saveModal" class="modal">
+      <div class="modal-content">
+        <h2 class="modal-title">알림</h2>
+        <p class="modal-text">도담이와 나눈 대화가<br>txt 파일로 저장되었습니다.</p>
+        <button id="modalCloseBtn" class="btn btn--primary modal-btn">확인</button>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script>
+  // 타이핑 인디케이터 제어
+  const composerInput = document.getElementById('composerInput');
+  const typingIndicator = document.querySelector('.msg--user.msg--typing');
+
+  // 입력창에 입력할 때
+  composerInput.addEventListener('input', function() {
+    // 입력창에 텍스트가 있으면 표시, 없으면 숨김
+    if (composerInput.value.trim().length > 0) {
+      typingIndicator.style.display = 'grid';
+    } else {
+      typingIndicator.style.display = 'none';
+    }
+  });
+
+  // 초기에는 타이핑 인디케이터 숨김
+  typingIndicator.style.display = 'none';
+
+  // 모달 제어
+  const modal = document.getElementById('saveModal');
+  const modalCloseBtn = document.getElementById('modalCloseBtn');
+
+  // 모달 닫기
+  function closeModal() {
+    modal.classList.remove('show');
+    setTimeout(function() {
+      modal.style.display = 'none';
+    }, 300); // 애니메이션 시간과 동일
+  }
+
+  modalCloseBtn.addEventListener('click', closeModal);
+
+  // 모달 바깥쪽 클릭시 닫기
+  window.addEventListener('click', function(event) {
+    if (event.target === modal) {
+      closeModal();
+    }
+  });
+
+  document.getElementById('saveTextBtn').addEventListener('click', function() {
+    // 모든 메시지 수집
+    const messages = document.querySelectorAll('.msg');
+    let textContent = '=== 도담이와의 대화 ===\n\n';
+    
+    messages.forEach((msg) => {
+      const bubble = msg.querySelector('.bubble');
+      const meta = msg.querySelector('.meta');
+      
+      if (bubble && meta) {
+        const sender = meta.textContent.trim();
+        const content = bubble.textContent.trim();
+        
+        textContent += `[${sender}]: ${content}\n\n`;
+      }
+    });
+    
+    // Blob 생성
+    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `도담이_대화_${new Date().toISOString().split('T')[0]}.txt`;
+    
+    // 다운로드 실행
+    link.click();
+    URL.revokeObjectURL(link.href);
+
+    // 팝업 모달 표시 (애니메이션 효과)
+    modal.style.display = 'flex';
+    setTimeout(function() {
+      modal.classList.add('show');
+    }, 10); // 약간의 딜레이 후 애니메이션 시작
+  });
+</script>
+
+</body>
+</html>

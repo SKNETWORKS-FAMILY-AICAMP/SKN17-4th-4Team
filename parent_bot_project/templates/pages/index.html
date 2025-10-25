@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>베이비가이드</title>
+
+    <!-- 정리된 링크들 -->
+    <link rel="icon" type="image/png" href="{% static 'img/logo.png' %}" />
+    <link rel="stylesheet" href="{% static 'css/global.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+  </head>
+  <body>
+    {% include 'partials/header.html' %}
+
+    <main>
+      <section class="hero">
+        <div class="hero__overlay">
+          <div class="container hero__content">
+            <h1>아이와 함께하는 행복한 여정</h1>
+            <p>궁금하고 막막할 때,<br>언제든 물어보세요.<br>든든한 친구가 되어 드릴게요.</p>
+            <button class="btn btn--cta" onclick="location.href='{% url 'dodam' %}'">
+              도담이 : 육아 도우미 챗봇
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    {% include 'partials/footer.html' %}
+  </body>
+</html>
