@@ -1,25 +1,15 @@
-FROM python:3.9-slim
+FROM python:3.12
 
-WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
 
-# 시스템 패키지 설치
-RUN apt-get update && apt-get install -y \
-    gcc \
-    postgresql-client \
-    && rm -rf /var/lib/apt/lists/*
+WORKDIR /code
 
-# Python 의존성 설치
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# 프로젝트 복사
-COPY . .
+COPY parent_bot_project_main/ .
 
-# 정적 파일 수집
-RUN cd parent_bot_project && python manage.py collectstatic --noinput || true
+RUN python manage.py collectstatic --noinput
 
-# 포트 노출
-EXPOSE 8000
-
-# Django 서버 실행
-CMD ["bash", "-c", "cd parent_bot_project && python manage.py runserver 0.0.0.0:8000"]
+CMD ["uvicorn", "babyguide.asgi:application", "--host", "0.0.0.0", "--port", "8000"]

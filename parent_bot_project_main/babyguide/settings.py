@@ -1,11 +1,13 @@
 # babyguide/settings.py
 from pathlib import Path
+import os
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- Required core settings ---
-SECRET_KEY = 'dev-secret-key-change-me'
-DEBUG = True
-ALLOWED_HOSTS = ["3.39.237.143","localhost"]
+SECRET_KEY = os.environ.get('SECRET_KEY')
+DEBUG = os.environ.get('DEBUG', 'True') == 'True'
+ALLOWED_HOSTS = ["13.124.52.49", "localhost"]
 
 INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',
@@ -42,17 +44,25 @@ TEMPLATES = [
 ROOT_URLCONF = 'babyguide.urls'
 WSGI_APPLICATION = 'babyguide.wsgi.application'
 
+# Database 설정 - 환경 변수 필수
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': os.environ.get('DB_ENGINE'),
+        'NAME': os.environ.get('DB_NAME'),
+        'USER': os.environ.get('DB_USER'),
+        'PASSWORD': os.environ.get('DB_PASSWORD'),
+        'HOST': os.environ.get('DB_HOST'),
+        'PORT': os.environ.get('DB_PORT'),
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        },
     }
 }
 
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']  # 개발용 정적 폴더
 # 배포 시:
-# STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # --- i18n / timezone ---
 LANGUAGE_CODE = 'ko-kr'
@@ -62,20 +72,6 @@ USE_TZ = True
 
 # --- Model defaults ---
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'babyguide',         # 위에서 만든 DB 이름
-        'USER': 'root',              # DB 사용자명
-        'PASSWORD': 'uyer1897@@',        # DB 비밀번호
-        'HOST': 'localhost',         # 로컬이면 그대로
-        'PORT': '3306',              # MySQL 기본 포트
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
-    }
-}
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'no-reply@babyguide.local'

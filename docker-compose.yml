@@ -1,29 +1,51 @@
-version: '3.8'
+# docker-compose.yml
+version: "3.8"                      # Compose 파일 스펙 버전
 
-services:
-  web:
-    build: .
-    command: bash -c "cd parent_bot_project && python manage.py runserver 0.0.0.0:8000"
+services:                           # 실행할 컨테이너(서비스) 목록 시작
+  
+  web:                              # Django 웹 애플리케이션 서비스
+    build: .                        # 현재 디렉토리의 Dockerfile로 이미지 빌드
+    container_name: django_app      # 컨테이너 이름 지정
+    command: uvicorn babyguide.asgi:application --host 0.0.0.0 --port 8000 --reload
+                                    # Uvicorn으로 Django ASGI 앱 실행 (--reload: 코드 변경 시 자동 재시작)
     volumes:
-      - .:/app
+      - ./parent_bot_project_main:/code  # 로컬 Django 프로젝트를 컨테이너 /code에 마운트 (실시간 반영)
     ports:
-      - "8000:8000"
-    environment:
-      - DEBUG=True
-      - SECRET_KEY=django-insecure-your-secret-key-here
+      - "8000:8000"                 # 호스트 8000 포트를 컨테이너 8000 포트에 매핑
+    env_file:
+      - .env                        # .env 파일의 환경 변수를 컨테이너에 주입
     depends_on:
-      - db
+      mysql:                        # MySQL 서비스가 준비될 때까지 대기
+        condition: service_healthy  # MySQL의 healthcheck가 통과되면 시작
+    restart: unless-stopped         # 수동으로 중지하지 않는 한 자동 재시작
 
-  db:
-    image: postgres:13
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_DB=babyguide
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+  mysql:                            # 서비스 이름(컴포즈 네트워크 내 호스트명으로도 사용됨)
+    image: mysql:8.4                # MySQL 8.4(LTS) 공식 이미지
+    container_name: mysql           # 컨테이너 표시 이름(생략 시 자동 생성)
     ports:
-      - "5432:5432"
+      - "3306:3306"                 # 호스트 3306 → 컨테이너 3306 포트 매핑
+                                    # 외부 접속 불필요하면 이 줄을 삭제(보안상 안전)
+    environment:                    # MySQL 이미지가 읽는 초기 설정용 환경변수
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}  # 필수: root 비밀번호 (.env에서 읽어옴)
+      - MYSQL_DATABASE=${MYSQL_DATABASE}            # 선택: 최초 생성할 DB 이름 (.env에서 읽어옴)
+      - MYSQL_USER=${MYSQL_USER}                    # 선택: 앱용 사용자 이름 (.env에서 읽어옴)
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}            # 선택: 앱용 사용자 비밀번호 (.env에서 읽어옴)
+      - TZ=Asia/Seoul                               # 컨테이너 시간대 설정
+    command: [                                      # mysqld 실행 옵션 추가
+
+      "--default-authentication-plugin=mysql_native_password",  # 클라이언트 호환성 좋음
+      "--character-set-server=utf8mb4",                          # 기본 문자셋을 utf8mb4로(이모지 포함)
+      "--collation-server=utf8mb4_0900_ai_ci"                    # MySQL 8 권장 콜레이션
+    ]
+    volumes:
+      - db_data:/var/lib/mysql                      # DB 파일을 도커 볼륨에 영구 보관
+    healthcheck:                                    # MySQL 준비 완료(healthy) 여부 확인
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD || exit 1"]
+                                    # mysqladmin으로 MySQL 서버 응답 확인 ($$는 도커 이스케이프)
+      interval: 5s                                  # 헬스체크 주기 (5초마다 확인)
+      timeout: 3s                                   # 헬스체크 타임아웃 (3초 이내 응답 필요)
+      retries: 20                                   # 실패 허용 횟수 (20번까지 재시도)
+    restart: unless-stopped                         # 수동으로 중지하지 않는 한 자동 재시작
 
 volumes:
-  postgres_data:
+  db_data:                                          # 위에서 참조한 네임드 볼륨 정의 (Docker가 관리)
