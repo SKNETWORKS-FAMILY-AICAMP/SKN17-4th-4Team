@@ -8,6 +8,7 @@ urlpatterns = [
     path('logout/', views.logout_view, name='logout'),
     path('password-reset/', views.password_reset_view, name='password_reset'),
     path('model/', views.dodam_view, name='dodam'),
+    path('api/chat/', views.chat_api, name='api_chat'),  # 런팟 API 연동 챗봇 엔드포인트
     path('api/nickname-check/', views.nickname_check, name='api_nickname_check'),
     path('api/email/send-code/', views.send_email_code, name='api_send_email_code'),
     path('api/email/verify-code/', views.verify_email_code, name='api_verify_email_code'),

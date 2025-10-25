@@ -8,6 +8,7 @@ from django.utils import timezone
 from datetime import timedelta
 import random
 import re
+import requests  # 런팟 API 호출을 위한 HTTP 라이브러리
 
 # ===== 서버 유효성 검사 규칙 =====
 NICKNAME_RE = re.compile(r'^[A-Za-z0-9가-힣]{2,20}$')
@@ -195,6 +196,71 @@ def dodam_view(request):
             'show_modal': True
         })
     return render(request, 'pages/model.html')
+
+
+def chat_api(request):
+    """
+    런팟 API와 통신하여 챗봇 응답 생성
+    프론트엔드에서 AJAX로 호출하는 API 엔드포인트
+    """
+    # POST 요청만 허용 (GET 요청은 거부)
+    if request.method != 'POST':
+        return JsonResponse({'ok': False, 'error': 'POST만 허용'}, status=405)
+    
+    # 로그인 여부 확인 (로그인 안 하면 거부)
+    if not request.user.is_authenticated:
+        return JsonResponse({'ok': False, 'error': '로그인이 필요합니다'}, status=401)
+    
+    import json
+    try:
+        # 요청 본문(body)에서 JSON 데이터 파싱
+        data = json.loads(request.body)
+        question = data.get('question', '').strip()  # 사용자 질문
+        history = data.get('history', [])  # 이전 대화 기록
+        
+        # 질문이 비어있으면 에러 반환
+        if not question:
+            return JsonResponse({'ok': False, 'error': '질문을 입력해주세요'})
+        
+        # 런팟 서버의 API URL (실제 배포 시 환경변수로 관리 권장)
+        RUNPOD_API_URL = "https://i7ob51x8vg4hqt-8000.proxy.runpod.net/generate"
+        
+        # 런팟 API에 POST 요청 전송
+        response = requests.post(
+            RUNPOD_API_URL,
+            json={
+                'question': question,  # 사용자 질문
+                'history': history,  # 대화 기록 (컨텍스트 유지)
+                'max_new_tokens': 512,  # 생성할 최대 토큰 수
+                'temperature': 0.2,  # 생성 다양성 (낮을수록 일관적)
+                'top_p': 0.95  # nucleus sampling 파라미터
+            },
+            timeout=60  # 60초 타임아웃 (모델 응답 대기 시간)
+        )
+        
+        # HTTP 에러 발생 시 예외 발생시킴
+        response.raise_for_status()
+        
+        # 런팟 API 응답을 JSON으로 파싱
+        result = response.json()
+        
+        # 성공 응답 반환 (프론트엔드로)
+        return JsonResponse({
+            'ok': True,
+            'answer': result.get('answer') or result.get('text'),  # 답변 텍스트
+            'mode': result.get('mode', 'chat'),  # 모드 (chat/search)
+            'latency_ms': result.get('latency_ms', 0)  # 응답 시간
+        })
+        
+    except requests.exceptions.Timeout:
+        # 타임아웃 에러 (60초 내 응답 없음)
+        return JsonResponse({'ok': False, 'error': '응답 시간 초과. 다시 시도해주세요.'})
+    except requests.exceptions.RequestException as e:
+        # 네트워크 에러 (연결 실패, HTTP 에러 등)
+        return JsonResponse({'ok': False, 'error': f'서버 연결 오류: {str(e)}'})
+    except Exception as e:
+        # 기타 모든 에러 (JSON 파싱 실패 등)
+        return JsonResponse({'ok': False, 'error': f'오류 발생: {str(e)}'})
 
 
 # =========================

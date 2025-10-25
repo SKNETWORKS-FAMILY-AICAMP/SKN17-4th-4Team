@@ -28,42 +28,12 @@
     <!-- 메시지 영역 -->
     <main class="chat">
       <ol class="chat__messages" aria-live="polite">
-        <!-- 사용자 질문 (오른쪽) -->
-        <li class="msg msg--user">
-          <div class="bubble-wrapper">
-            <div class="bubble">
-              아이가 이유식을 먹지 않는데 어떻게 해야 돼?
-            </div>
-      <div class="container chat__titlebar-inner">
-        </li>
-
-        <!-- 봇 답변 (왼쪽) -->
+        <!-- 초기 환영 메시지 -->
         <li class="msg msg--bot">
           <div class="bubble-wrapper">
             <div class="bubble">
-              <p><strong>아이가 이유식을 먹지 않는 이유</strong>는 여러 가지가 있을 수 있어요. 먼저, 아직 익숙하지 않은
-                질감/맛 때문에 거부감이 생길 수 있고, 수유 패턴 변화도 원인이 될 수 있습니다. 아래 방법을 순서대로
-                시도해 보세요.</p>
-              <ol>
-                <li><strong>익숙한 분위기</strong> 만들기: 같은 자리/의자/그릇/수저를 꾸준히 사용합니다.</li>
-                <li><strong>아주 소량부터</strong>: 한두 숟가락으로 시작해 성공 경험을 쌓게 합니다.</li>
-                <li><strong>질감 단계적 조절</strong>: 너무 되거나 묽지 않게, 한 번에 한 가지만 바꿔봅니다.</li>
-                <li><strong>수유-이유식 간격</strong>: 공복에 너무 배고프지 않도록 1.5~2시간 간격을 맞춥니다.</li>
-                <li><strong>긍정적 신호에 보상</strong>: 삼키기/입 열기 등 신호에 칭찬과 미소로 반응합니다.</li>
-              </ol>
-              <p>1~2주 동안 위 과정을 기록해 보며 반응을 관찰하세요. 구토/체중감소/탈수 등 이상 신호가 있으면
-                소아과 상담이 필요합니다.</p>
-            </div>
-          </div>
-        </li>
-
-        <!-- 사용자 타이핑 인디케이터 -->
-        <li class="msg msg--user msg--typing">
-          <div class="bubble-wrapper">
-            <div class="bubble typing-bubble">
-              <span></span>
-              <span></span>
-              <span></span>
+              안녕하세요! 저는 육아 도우미 도담이예요. 🍼<br>
+              궁금한 육아 정보나 병원·약국 찾기 등 무엇이든 물어보세요!
             </div>
           </div>
         </li>
@@ -72,6 +42,7 @@
 
     <!-- 입력창 -->
     <form class="composer" action="#" method="post">
+      {% csrf_token %}
       <label class="sr-only" for="composerInput">메시지 입력</label>
       <input id="composerInput" class="composer__input" type="text" placeholder="메시지를 입력하세요..." autocomplete="off" required />
       <button type="submit" class="btn btn--primary composer__send">보내기</button>
@@ -90,78 +61,182 @@
 
 
   <script>
-  // 타이핑 인디케이터 제어
-  const composerInput = document.getElementById('composerInput');
-  const typingIndicator = document.querySelector('.msg--user.msg--typing');
-
-  // 입력창에 입력할 때
-  composerInput.addEventListener('input', function() {
-    // 입력창에 텍스트가 있으면 표시, 없으면 숨김
-    if (composerInput.value.trim().length > 0) {
-      typingIndicator.style.display = 'grid';
-    } else {
-      typingIndicator.style.display = 'none';
-    }
-  });
-
-  // 초기에는 타이핑 인디케이터 숨김
-  typingIndicator.style.display = 'none';
-
-  // 모달 제어
-  const modal = document.getElementById('saveModal');
-  const modalCloseBtn = document.getElementById('modalCloseBtn');
-
-  // 모달 닫기
-  function closeModal() {
-    modal.classList.remove('show');
-    setTimeout(function() {
-      modal.style.display = 'none';
-    }, 300); // 애니메이션 시간과 동일
-  }
-
-  modalCloseBtn.addEventListener('click', closeModal);
-
-  // 모달 바깥쪽 클릭시 닫기
-  window.addEventListener('click', function(event) {
-    if (event.target === modal) {
-      closeModal();
-    }
-  });
-
-  document.getElementById('saveTextBtn').addEventListener('click', function() {
-    // 모든 메시지 수집
-    const messages = document.querySelectorAll('.msg');
-    let textContent = '=== 도담이와의 대화 ===\n\n';
+    // ========== 전역 변수 초기화 ==========
+    // DOM 요소들을 변수에 저장 (반복 사용하기 위해)
+    const chatMessages = document.querySelector('.chat__messages');  // 메시지 목록 영역
+    const composerForm = document.querySelector('.composer');  // 입력 폼
+    const composerInput = document.getElementById('composerInput');  // 입력창
+    const sendBtn = composerForm.querySelector('.composer__send');  // 전송 버튼
+    const saveTextBtn = document.getElementById('saveTextBtn');  // 텍스트 저장 버튼
+    const modal = document.getElementById('saveModal');  // 저장 완료 모달
+    const modalCloseBtn = document.getElementById('modalCloseBtn');  // 모달 닫기 버튼
     
-    messages.forEach((msg) => {
-      const bubble = msg.querySelector('.bubble');
-      const meta = msg.querySelector('.meta');
+    // 대화 기록을 저장하는 배열 (런팟 API에 컨텍스트로 전달)
+    let chatHistory = [];
+
+    // ========== CSRF 토큰 가져오기 함수 ==========
+    // Django의 CSRF 보안을 위해 쿠키에서 토큰 추출
+    function getCSRFToken() {
+      const cookies = document.cookie.split(';');  // 쿠키를 세미콜론으로 분리
+      for (let cookie of cookies) {
+        const [name, value] = cookie.trim().split('=');  // 이름=값 형태로 분리
+        if (name === 'csrftoken') return value;  // csrftoken 찾으면 반환
+      }
+      return '';  // 없으면 빈 문자열
+    }
+
+    // ========== 메시지 추가 함수 ==========
+    // 채팅 창에 사용자/봇 메시지를 동적으로 추가
+    function addMessage(content, isUser = false) {
+      const li = document.createElement('li');  // 새 li 요소 생성
+      li.className = isUser ? 'msg msg--user' : 'msg msg--bot';  // 사용자/봇 구분
+      li.innerHTML = `
+        <div class="bubble-wrapper">
+          <div class="bubble">${content}</div>
+        </div>
+      `;
+      chatMessages.appendChild(li);  // 메시지 목록에 추가
       
-      if (bubble && meta) {
-        const sender = meta.textContent.trim();
-        const content = bubble.textContent.trim();
+      // 스크롤을 맨 아래로 자동 이동 (최신 메시지 보이게)
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    // ========== 로딩 인디케이터 추가 ==========
+    // 봇이 응답 생성 중일 때 "..." 애니메이션 표시
+    function addLoadingIndicator() {
+      const li = document.createElement('li');
+      li.className = 'msg msg--bot msg--loading';
+      li.id = 'loadingIndicator';  // ID로 나중에 제거하기 위해
+      li.innerHTML = `
+        <div class="bubble-wrapper">
+          <div class="bubble typing-bubble">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+      `;
+      chatMessages.appendChild(li);
+      chatMessages.scrollTop = chatMessages.scrollHeight;  // 스크롤 이동
+    }
+
+    // ========== 로딩 인디케이터 제거 ==========
+    // 봇 응답이 도착하면 로딩 제거
+    function removeLoadingIndicator() {
+      const indicator = document.getElementById('loadingIndicator');
+      if (indicator) indicator.remove();  // 요소 삭제
+    }
+
+    // ========== 폼 제출 이벤트 핸들러 ==========
+    // 사용자가 메시지를 전송할 때 실행
+    composerForm.addEventListener('submit', async function(e) {
+      e.preventDefault();  // 폼 기본 동작(페이지 새로고침) 방지
+      
+      const question = composerInput.value.trim();  // 입력값 가져오기 (공백 제거)
+      if (!question) return;  // 빈 값이면 무시
+
+      // 1) 사용자 메시지를 채팅창에 추가
+      addMessage(question, true);
+      
+      // 2) 대화 기록에 추가 (role: user)
+      chatHistory.push({ role: 'user', content: question });
+      
+      // 3) 입력창 초기화 및 UI 비활성화 (중복 전송 방지)
+      composerInput.value = '';
+      composerInput.disabled = true;  // 입력 불가
+      sendBtn.disabled = true;  // 버튼 비활성화
+      sendBtn.textContent = '전송 중...';  // 버튼 텍스트 변경
+      
+      // 4) 로딩 인디케이터 표시
+      addLoadingIndicator();
+
+      try {
+        // 5) Django 백엔드 API 호출 (AJAX)
+        const response = await fetch('/api/chat/', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',  // JSON 형식
+            'X-CSRFToken': getCSRFToken()  // CSRF 토큰 포함
+          },
+          body: JSON.stringify({
+            question: question,  // 현재 질문
+            history: chatHistory.slice(0, -1)  // 이전 대화 기록 (마지막 질문 제외)
+          })
+        });
+
+        const data = await response.json();  // 응답을 JSON으로 파싱
         
-        textContent += `[${sender}]: ${content}\n\n`;
+        // 6) 로딩 인디케이터 제거
+        removeLoadingIndicator();
+
+        if (data.ok) {
+          // 성공: 봇 응답을 채팅창에 추가
+          const answer = data.answer.replace(/\n/g, '<br>');  // 줄바꿈 처리
+          addMessage(answer, false);
+          
+          // 대화 기록에 봇 응답 추가 (role: assistant)
+          chatHistory.push({ role: 'assistant', content: data.answer });
+        } else {
+          // 실패: 에러 메시지 표시
+          addMessage(`⚠️ 오류: ${data.error}`, false);
+        }
+      } catch (error) {
+        // 네트워크 오류 등 예외 처리
+        removeLoadingIndicator();
+        addMessage(`⚠️ 네트워크 오류가 발생했습니다: ${error.message}`, false);
+      } finally {
+        // 7) 입력창 재활성화 (항상 실행)
+        composerInput.disabled = false;
+        sendBtn.disabled = false;
+        sendBtn.textContent = '보내기';
+        composerInput.focus();  // 입력창에 포커스
       }
     });
-    
-    // Blob 생성
-    const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = `도담이_대화_${new Date().toISOString().split('T')[0]}.txt`;
-    
-    // 다운로드 실행
-    link.click();
-    URL.revokeObjectURL(link.href);
 
-    // 팝업 모달 표시 (애니메이션 효과)
-    modal.style.display = 'flex';
-    setTimeout(function() {
-      modal.classList.add('show');
-    }, 10); // 약간의 딜레이 후 애니메이션 시작
-  });
-</script>
+    // ========== 텍스트 파일 저장 기능 ==========
+    // "텍스트 파일로 저장" 버튼 클릭 시
+    saveTextBtn.addEventListener('click', function() {
+      // 1) 모든 메시지 수집 (로딩 제외)
+      const messages = document.querySelectorAll('.msg:not(.msg--loading)');
+      let textContent = '=== 도담이와의 대화 ===\n\n';
+      
+      messages.forEach((msg) => {
+        const bubble = msg.querySelector('.bubble');
+        if (bubble) {
+          const isUser = msg.classList.contains('msg--user');
+          const sender = isUser ? '나' : '도담이';  // 발신자 구분
+          const content = bubble.textContent.trim();  // 메시지 내용
+          textContent += `[${sender}]: ${content}\n\n`;
+        }
+      });
+      
+      // 2) Blob 생성 (파일 데이터)
+      const blob = new Blob([textContent], { type: 'text/plain;charset=utf-8' });
+      const link = document.createElement('a');  // 임시 다운로드 링크 생성
+      link.href = URL.createObjectURL(blob);  // Blob URL 생성
+      link.download = `도담이_대화_${new Date().toISOString().split('T')[0]}.txt`;  // 파일명 (날짜 포함)
+      link.click();  // 다운로드 실행
+      URL.revokeObjectURL(link.href);  // 메모리 해제
+
+      // 3) 저장 완료 모달 표시 (애니메이션 효과)
+      modal.style.display = 'flex';
+      setTimeout(() => modal.classList.add('show'), 10);  // 약간의 딜레이 후 애니메이션
+    });
+
+    // ========== 모달 닫기 함수 ==========
+    function closeModal() {
+      modal.classList.remove('show');  // 애니메이션 클래스 제거
+      setTimeout(() => modal.style.display = 'none', 300);  // 300ms 후 숨김
+    }
+
+    // 모달 닫기 버튼 클릭 시
+    modalCloseBtn.addEventListener('click', closeModal);
+    
+    // 모달 바깥쪽 클릭 시 닫기
+    window.addEventListener('click', function(event) {
+      if (event.target === modal) closeModal();
+    });
+  </script>
 
 </body>
 </html>
