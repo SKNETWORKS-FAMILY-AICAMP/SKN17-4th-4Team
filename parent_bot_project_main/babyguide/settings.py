@@ -17,6 +17,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # WhiteNoise 추가 (SecurityMiddleware 바로 다음)
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -59,10 +60,12 @@ DATABASES = {
     }
 }
 
-STATIC_URL = 'static/'
-STATICFILES_DIRS = [BASE_DIR / 'static']  # 개발용 정적 폴더
-# 배포 시:
+STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+# WhiteNoise 설정 (압축 및 캐싱)
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # --- i18n / timezone ---
 LANGUAGE_CODE = 'ko-kr'
