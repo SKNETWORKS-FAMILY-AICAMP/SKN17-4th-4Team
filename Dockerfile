@@ -22,4 +22,4 @@ RUN cd parent_bot_project && python manage.py collectstatic --noinput || true
 EXPOSE 8000
 
 # Django 서버 실행
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+CMD ["bash", "-c", "cd parent_bot_project && python manage.py runserver 0.0.0.0:8000"]
