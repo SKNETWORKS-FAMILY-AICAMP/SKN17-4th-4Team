@@ -9,6 +9,7 @@ from datetime import timedelta
 import random
 import re
 import requests  # 런팟 API 호출을 위한 HTTP 라이브러리
+import os  # 환경변수 사용을 위한 os 모듈
 
 # ===== 서버 유효성 검사 규칙 =====
 NICKNAME_RE = re.compile(r'^[A-Za-z0-9가-힣]{2,20}$')
@@ -225,9 +226,19 @@ def chat_api(request):
         # 런팟 서버의 API URL (실제 배포 시 환경변수로 관리 권장)
         RUNPOD_API_URL = "https://i7ob51x8vg4hqt-8000.proxy.runpod.net/generate"
         
+        # 런팟 API 키 (환경변수에서 가져오거나 직접 설정)
+        RUNPOD_API_KEY = os.getenv('RUNPOD_API_KEY', '')  # 환경변수 사용 시
+        # RUNPOD_API_KEY = ""  # 빈 값 = 인증 없음 (개발용)
+        
+        # 요청 헤더 설정 (API 키가 있으면 추가)
+        headers = {'Content-Type': 'application/json'}
+        if RUNPOD_API_KEY:
+            headers['X-API-Key'] = RUNPOD_API_KEY
+        
         # 런팟 API에 POST 요청 전송
         response = requests.post(
             RUNPOD_API_URL,
+            headers=headers,
             json={
                 'question': question,  # 사용자 질문
                 'history': history,  # 대화 기록 (컨텍스트 유지)
