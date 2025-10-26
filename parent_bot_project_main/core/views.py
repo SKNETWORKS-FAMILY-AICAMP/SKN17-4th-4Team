@@ -224,7 +224,7 @@ def chat_api(request):
             return JsonResponse({'ok': False, 'error': '질문을 입력해주세요'})
         
         # 런팟 서버의 API URL (실제 배포 시 환경변수로 관리 권장)
-        RUNPOD_API_URL = "https://i7ob51x8vg4hqt-8000.proxy.runpod.net/generate"
+        RUNPOD_API_URL = os.getenv("RUNPOD_API_URL", "https://qlele6r3nm2l34-8000.proxy.runpod.net/generate")
         
         # 런팟 API 키 (환경변수에서 가져오거나 직접 설정)
         RUNPOD_API_KEY = os.getenv('RUNPOD_API_KEY', '')  # 환경변수 사용 시
