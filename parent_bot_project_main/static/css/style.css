@@ -375,6 +375,7 @@ body {
 .chat {
   margin-top: 14px;
   padding: 0 10vw;
+  padding-bottom: 120px;
 }
 .chat__messages {
   list-style: none;

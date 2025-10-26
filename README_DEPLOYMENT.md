@@ -10,7 +10,15 @@
 
 ## 1. 런팟(RunPod) 서버 설정
 
-### 1.1 초기 설정
+### 1.1 초기 설정 -> 간단하게 
+
+1. Pod 생성
+2. 환경변수 다시 설정 (MODEL_ID, HF_EMBED_REPO_ID 등)
+3. HTTP 포트 8000 다시 추가
+4. /workspace/app/, /workspace/index/ 폴더 다시 생성
+5. 파일 전부 다시 업로드 (app.py, faiss.index 등)
+6. 라이브러리 설치
+7. 서버 실행
 
 #### Pod 생성 및 환경변수 설정
 1. RunPod 웹사이트에서 GPU Pod 생성
