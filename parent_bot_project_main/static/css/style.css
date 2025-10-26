@@ -18,6 +18,7 @@ body {
   background: rgba(255,255,255,0.9);
   backdrop-filter: blur(8px);
   box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  z-index: 100;
 }
 .nav__inner {
   display: flex;
@@ -340,11 +341,13 @@ body {
 
 /* 상단 타이틀 띠 */
 .chat__titlebar {
+   position: sticky;  /* 👈 sticky 추가 */
+  top: 64px;         /* 👈 네비게이션 높이만큼 아래에 고정 */
+  z-index: 90;       /* 👈 네비보다 낮은 z-index */
   margin-top: 0px;
   background: #fdaeb4;
   border-radius: 12px;
   overflow: hidden;
-  position: relative;
 }
 .chat__titlebar-inner {
   display: flex;
