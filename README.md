@@ -141,9 +141,8 @@
 ---
 
 ## 5. 시스템 구성도
+<img width="576" height="385" alt="io" src="https://github.com/user-attachments/assets/4691f2bf-2719-4a1f-85be-fd5ef6525687" />
 
-
-<img width="576" height="385" alt="아키텍처" src="https://github.com/user-attachments/assets/b662951d-218d-404b-bb0e-a173f6a6b9d9" />
 
 
 ---
