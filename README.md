@@ -157,7 +157,7 @@
 ## 7. 요구사항 정의
 
 <img width="1287" height="781" alt="image" src="https://github.com/user-attachments/assets/05bb3611-5bb1-4d82-bbef-b4e04a756afe" />
-
+<img src="./12.jpg" width="150" height="150">
 
 
 ---
