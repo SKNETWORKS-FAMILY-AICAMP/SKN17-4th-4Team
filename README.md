@@ -30,15 +30,64 @@
 
 ---
 
-## 1. 팀 소개
+## 1. 👨‍👩‍👧‍👦 팀 소개
 
-| 이름  | GitHub ID  |
-| --- | ---------- |
-| 김민균 | <a href="https://github.com/alswhitetiger">@alswhitetiger</a></td> |
-| 김세한 | <a href="https://github.com/kimsehan11">@kimsehan11</a></td> |
-| 김수현 | <a href="https://github.com/K-SH98">@K-SH98</a></td> |
-| 정의중 | <a href="https://github.com/uii42">@uii42</a></td> |
-| 최우진 | <a href="https://github.com/CHUH00">@CHUH00</a></td> |
+<h2>육아 복지부</h2>
+
+<table align="center">
+  <tr>
+    <td align="center" valign="top" style="padding: 10px;">
+      <strong>김민균</strong><br/>
+      <img src="https://github.com/user-attachments/assets/b242f6f7-423a-441f-9fed-65e754f4aa93" width="150" alt="김민균"/>
+    </td>
+    <td align="center" valign="top" style="padding: 10px;">
+      <strong>김세한</strong><br/>
+      <img src="https://github.com/user-attachments/assets/565cf252-2433-4bcb-9c82-1bbd35e42d8a" width="150" alt="김세한"/>
+    </td>
+    <td align="center" valign="top" style="padding: 10px;">
+      <strong>김수현</strong><br/>
+      <img src="https://github.com/user-attachments/assets/b3101204-db35-48ed-823c-66e9e441ccba" width="150" alt="김수현"/>
+    </td>
+    <td align="center" valign="top" style="padding: 10px;">
+      <strong>정의중</strong><br/>
+      <img src="https://github.com/user-attachments/assets/c0790bf8-cc79-4e38-b0d1-b49a27eadbab" width="150" alt="정의중"/>
+    </td>
+    <td align="center" valign="top" style="padding: 10px;">
+      <strong>최우진</strong><br/>
+      <img src="https://github.com/user-attachments/assets/d8451ecc-a69e-46ec-b00f-dbd2eefec6e0" width="150" alt="최우진"/>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><a href="https://github.com/alswhitetiger">@alswhitetiger</a></td>
+    <td align="center"><a href="https://github.com/kimsehan11">@kimsehan11</a></td>
+    <td align="center"><a href="https://github.com/K-SH98">@K-SH98</a></td>
+    <td align="center"><a href="https://github.com/uii42">@uii42</a></td>
+    <td align="center"><a href="https://github.com/CHUH00">@CHUH00</a></td>
+  </tr>
+</table>
+
+<br><br/>
+
+<br>
+
+
+
+
+
+## 2. 프로젝트 개요
+
+- **프로젝트 소개**: 본 프로젝트는 넘쳐나는 육아 정보 속에서 신뢰할 수 있는 정보를 찾기 어려운 부모와 교사들을 위해, 전문 학술 논문 데이터를 학습한 대규모 언어 모델(LLM)을 개발하는 것을 목표로 합니다. <br>육아의 경우 부모의 경험이 없는 상황이 대부분이고, 빠른 대처가 필요하기에 육아 챗봇의 필요성을 찾을 수 있었습니다.
+
+- **프로젝트 필요성**: 온라인에 산재한 부정확하거나 상업적인 육아 정보는 초보 부모에게 혼란을 야기할 수 있습니다.<br> 검증된 학술 자료를 기반으로 학습된 AI는 사용자가 과학적이고 신뢰도 높은 육아 지식에 쉽게 접근할 수 있도록 돕고, 자녀의 건강한 발달을 지원하는 데 중요한 역할을 할 수 있습니다.
+
+- **주요 목표**: 육아·보육 정보 제공
+육아 챗봇 시스템은 사용자에게 발달 단계, 건강 관리, 안전 지침 등 신뢰성 있는 정보를 제공합니다.<br>
+사용자 맞춤형 응답
+사용자의 질문 의도와 필요에 따라 정보를 제공하여 양육과 보육 경험을 최적화합니다.
+
+<br>
+
+
 
 ---
 
