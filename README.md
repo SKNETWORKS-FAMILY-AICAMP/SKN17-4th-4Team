@@ -123,7 +123,8 @@
 
 ## 7. 요구사항 정의
 
-<img width="1288" height="707" alt="image" src="https://github.com/user-attachments/assets/e0cf3b02-0898-4c72-966a-6c1c89e4decd" />
+<img width="1286" height="779" alt="image" src="https://github.com/user-attachments/assets/4e8e4de5-cb7a-4334-9735-a536860b3027" />
+
 
 ---
 
@@ -131,28 +132,32 @@
 
 ### 8-1) 메인 홈 화면 (`scr-home-01`)
 
-<img width="1382" height="758" alt="image" src="https://github.com/user-attachments/assets/f665a7f2-87a0-4c45-9c28-f922d4b0aeb6" />
+<img width="1381" height="784" alt="image" src="https://github.com/user-attachments/assets/abd08362-4550-4739-bed1-eee98e32221f" />
+
 
 
 ---
 
 ### 8-2) 로그인 화면 (`scr-user-01`)
 
-<img width="1384" height="754" alt="image" src="https://github.com/user-attachments/assets/d3be6c2d-dae0-4b96-b6ab-c340f9bbf2c8" />
+<img width="1380" height="786" alt="image" src="https://github.com/user-attachments/assets/4e2637d9-2b27-4549-8269-167210a0367b" />
+
 
 
 ---
 
 ### 8-3) 회원가입 화면 (`scr-user-02`)
 
-<img width="1384" height="761" alt="image" src="https://github.com/user-attachments/assets/9c669893-c8e6-484c-a61c-72107103e0eb" />
+<img width="1376" height="774" alt="image" src="https://github.com/user-attachments/assets/136588aa-4660-475e-8117-dd8effe3db84" />
+
 
 
 ---
 
 ### 8-4) 챗봇 화면 (`scr-chat-01`)
 
-<img width="1387" height="756" alt="image" src="https://github.com/user-attachments/assets/669db2d4-649d-4b38-9b17-9a6b9b413adb" />
+<img width="1385" height="793" alt="image" src="https://github.com/user-attachments/assets/62219abf-0fe9-4b08-a79b-69ea27ae33ec" />
+
 
 ---
 
