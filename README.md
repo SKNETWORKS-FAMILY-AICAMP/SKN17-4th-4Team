@@ -141,9 +141,9 @@
 ---
 
 ## 5. 시스템 구성도
-<img width="576" height="385" alt="io" src="https://github.com/user-attachments/assets/4691f2bf-2719-4a1f-85be-fd5ef6525687" />
+<img src="https://github.com/user-attachments/assets/4691f2bf-2719-4a1f-85be-fd5ef6525687" width="250" alt="io" />
 
-
+<img src="https://github.com/user-attachments/assets/b242f6f7-423a-441f-9fed-65e754f4aa93" width="150" alt="김민균"/>
 
 ---
 
