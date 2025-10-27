@@ -142,8 +142,8 @@
 
 ## 5. 시스템 구성도
 
-<img width="1536" height="1024" alt="KakaoTalk_20250629_005705559_07" src="https://github.com/user-attachments/assets/5964b5fd-df3d-4f08-a0fc-3858d01f3f53" />
 
+<img width="576" height="385" alt="아키텍처" src="https://github.com/user-attachments/assets/b662951d-218d-404b-bb0e-a173f6a6b9d9" />
 
 
 ---
