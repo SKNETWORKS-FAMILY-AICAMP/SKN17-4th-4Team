@@ -7,7 +7,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # --- Required core settings ---
 SECRET_KEY = os.environ.get('SECRET_KEY', 'dev-secret-key-change-me')  # 기본값 추가
 DEBUG = os.environ.get('DEBUG', 'True') == 'True'
-ALLOWED_HOSTS = ["13.124.214.15"]  # 127.0.0.1 추가
+ALLOWED_HOSTS = ["*"]  # 127.0.0.1 추가
 
 INSTALLED_APPS = [
     'django.contrib.admin', 'django.contrib.auth', 'django.contrib.contenttypes',

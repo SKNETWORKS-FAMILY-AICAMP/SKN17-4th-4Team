@@ -1,0 +1,11 @@
+fastapi
+uvicorn
+pydantic
+torch
+transformers
+sentence-transformers
+faiss-gpu-cu12
+requests
+numpy
+hf-transfer
+scikit-learn
