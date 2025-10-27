@@ -141,7 +141,9 @@
 ---
 
 ## 5. 시스템 구성도
-![Uploading image.png…]()
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/984470a7-17ba-42b0-982b-0bf3dc5927c5" />
+
+
 
 
 
