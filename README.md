@@ -141,8 +141,7 @@
 ---
 
 ## 5. 시스템 구성도
-
-<img width="576" height="385" alt="스크린샷 2025-10-27 오후 3 44 01" src="https://github.com/user-attachments/assets/659d9a35-2a61-4ab1-a4df-e517e0473c31" />
+<img width="1536" height="1024" alt="234234234" src="https://github.com/user-attachments/assets/423073b5-a4bb-4ad4-9914-b30cf0db78ba" />
 
 
 
