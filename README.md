@@ -15,9 +15,8 @@
 7. [요구사항 정의](#-요구사항-정의)
 8. [화면 설계서](#-화면-설계서)
 9. [테스트 계획 및 결과](#-테스트-계획-및-결과)
-10. [실행 방법](#-실행-방법)
-11. [향후 과제](#-향후-과제)
-12. [한줄 회고록](#-한줄-회고록)
+10. [향후 과제](#-향후-과제)
+11. [한줄 회고록](#-한줄-회고록)
 
 ## 1. 팀 소개
 
@@ -49,18 +48,9 @@
 
 ---
 
-## 3. 작업 계획
+## 3. WBS
 
-> **기간: 2일(데모/발표용 스프린트)**
 
-| Day    | 마일스톤           | 상세 작업                                         | 산출물                  |
-| ------ | -------------- | --------------------------------------------- | -------------------- |
-| 1일차 오전 | 리포 세팅          | README/이슈·PR 템플릿/브랜치 규칙 적용, CI 스켈레톤           | 초기 커밋, CI 통과         |
-| 1일차 오후 | 화면 마크업 1       | **메인 홈(scr-main-01)**, **로그인(scr-signin-01)** | 화면 초안, 라우팅           |
-| 2일차 오전 | 화면 마크업 2       | **회원가입(scr-signup-01)**, **챗봇(scr-chat-01)**  | 화면 초안, 상태/폼 검증       |
-| 2일차 오후 | API 목/연동 & 테스트 | 가짜 API/JSON 서버, 가입/로그인 흐름, 간단 E2E             | 데모 빌드(v0.1), 테스트 결과표 |
-
-* 위험/대응: 데이터 지연 ▶ 목API로 대체, 이미지 미확정 ▶ 플레이스홀더 사용\
 
 ---
 ## 4. 기술 스택 & 사용 모델
@@ -107,23 +97,6 @@
 
 ## 5. 시스템 구성도
 
-```
-[Client: Web/Mobile]
-        |
-        v
-[API Gateway / Nginx]
-        |
-        v
-[Backend: Django/DRF] --- [Auth(JWT/OAuth)]
-        |                       |
-        v                       v
-   [PostgreSQL]            [Object Storage(S3)]
-        |
-        v
-[ETL/Data Jobs] <--- [공공데이터/의료기관/보건소 API]
-```
-
-아키텍처 다이어그램(이미지):\
 
 ---
 
@@ -139,101 +112,40 @@
 
 <img width="1288" height="707" alt="image" src="https://github.com/user-attachments/assets/e0cf3b02-0898-4c72-966a-6c1c89e4decd" />
 
-
 ---
 
-## 8. API 설계
+## 8. 화면 설계서
 
-> 핵심 엔드포인트만 명시 (예시)
-
-| 메서드  | 경로                            | 설명                       |
-| ---- | ----------------------------- | ------------------------ |
-| POST | `/api/auth/signup`            | 회원가입(닉네임/이메일/비밀번호)       |
-| POST | `/api/auth/login`             | 로그인(JWT 발급)              |
-| POST | `/api/chat/ask`               | 질문 전송 → 답변 반환(출처/갱신일 포함) |
-| GET  | `/api/chat/export?format=txt` | 최근 대화 내보내기               |
-
-응답 예시(챗봇):
-
-```json
-{
-  "answer": "모유 수유 중 음식 권장사항은...",
-  "sources": [
-    {"title": "보건복지부 가이드", "url": "https://...", "updated_at": "2025-10-20"}
-  ]
-}
-```
-
----- | ----------------------------- | ------------------------ |
-| POST | `/api/auth/signup`            | 회원가입(닉네임/이메일/비밀번호)       |
-| POST | `/api/auth/login`             | 로그인(JWT 발급)              |
-| POST | `/api/chat/ask`               | 질문 전송 → 답변 반환(출처/갱신일 포함) |
-| GET  | `/api/chat/export?format=txt` | 최근 대화 내보내기               |
-
-응답 예시(챗봇):
-
-```json
-{
-  "answer": "모유 수유 중 음식 권장사항은...",
-  "sources": [
-    {"title": "보건복지부 가이드", "url": "https://...", "updated_at": "2025-10-20"}
-  ]
-}
-```
-
-
-응답 예시:
-
-```json
-{
-  "items": [
-    {
-      "id": 123,
-      "name": "행복소아과의원",
-      "lat": 37.51,
-      "lng": 127.02,
-      "night_service": true,
-      "phone": "02-123-4567"
-    }
-  ],
-  "total": 1
-}
-```
-
----
-
-## 9. 화면 설계서
-
-### 9-1) 메인 홈 화면 (`scr-home-01`)
+### 8-1) 메인 홈 화면 (`scr-home-01`)
 
 <img width="1382" height="758" alt="image" src="https://github.com/user-attachments/assets/f665a7f2-87a0-4c45-9c28-f922d4b0aeb6" />
 
 
 ---
 
-### 9-2) 로그인 화면 (`scr-user-01`)
+### 8-2) 로그인 화면 (`scr-user-01`)
 
 <img width="1384" height="754" alt="image" src="https://github.com/user-attachments/assets/d3be6c2d-dae0-4b96-b6ab-c340f9bbf2c8" />
 
 
 ---
 
-### 9-3) 회원가입 화면 (`scr-user-02`)
+### 8-3) 회원가입 화면 (`scr-user-02`)
 
 <img width="1384" height="761" alt="image" src="https://github.com/user-attachments/assets/9c669893-c8e6-484c-a61c-72107103e0eb" />
 
 
 ---
 
-### 9-4) 챗봇 화면 (`scr-chat-01`)
+### 8-4) 챗봇 화면 (`scr-chat-01`)
 
 <img width="1387" height="756" alt="image" src="https://github.com/user-attachments/assets/669db2d4-649d-4b38-9b17-9a6b9b413adb" />
 
 ---
 
-## 10. 테스트 계획 및 결과
+## 9. 테스트 계획 및 결과
 
-### 10-1) 테스트 계획
+### 9-1) 테스트 계획
 
 | ID           | 시나리오        | 절차                    | 기대 결과                          |
 | ------------ | ----------- | --------------------- | ------------------------------ |
@@ -243,19 +155,15 @@
 | TC-CHAT-01   | 기본 질의/응답    | 질문 입력 → 응답 확인         | 3s p95 이내 답변 표시                |
 | TC-CHAT-02   | 대화 저장       | 저장 버튼 클릭              | `dodam_YYYYMMDD_HHMM.txt` 다운로드 |
 
-### 10-2) 결과(예시)
+### 9-2) 결과(예시)
 
 | ID          | 결과   | 비고       |
 | ----------- | ---- | -------- |
 | TC-LOGIN-01 | Pass | 200ms 응답 |
 | TC-CHAT-01  | Pass | 2.5s p95 |
 
----|---|---|---|
-| TC-001 | 위치 기반 병원 조회 | 위치 허용 → 야간 필터 On | 야간 진료 병원만 표시 |
-| TC-010 | 접종 알림 | DOB 입력 → 접종 달 도래 | 알림 수신(앱/메일) |
-| TC-020 | 신고/블라인드 | 동일 게시물 3회 신고 | 자동 블라인드 처리 |
 
-### 10-2) 결과(예시)
+### 9-3) 결과(예시)
 
 | ID     | 결과   | 비고            |
 | ------ | ---- | ------------- |
@@ -266,71 +174,8 @@
 
 ---
 
-## 11. 실행 방법
 
-### 11-1) 환경 변수
-
-`.env` (예시)
-
-```
-DATABASE_URL=postgresql://user:pass@host:5432/parentcare
-JWT_SECRET=replace_me
-MAPS_API_KEY=replace_me
-```
-
-### 11-2) 로컬(예: Node + Django 혼합 리포일 때)
-
-```bash
-# Frontend
-cd frontend
-npm i
-npm run dev
-
-# Backend
-cd backend
-python -m venv .venv && source .venv/bin/activate  # Windows: .venv\Scripts\activate
-pip install -r requirements.txt
-python manage.py migrate
-python manage.py runserver
-```
-
-### 11-3) 도커(옵션)
-
-```bash
-docker compose up -d --build
-```
-
----
-
-## 12. 폴더 구조
-
-```
-.
-├─ frontend/               # React, Vite
-│  ├─ src/
-│  └─ ...
-├─ backend/                # Django/DRF
-│  ├─ app/
-│  └─ ...
-├─ docs/
-│  ├─ architecture.png
-│  └─ ui/
-│     ├─ home.png
-│     ├─ signin.png
-│     ├─ signup.png
-│     └─ chat.png
-├─ .github/
-│  ├─ ISSUE_TEMPLATE/
-│  │  ├─ bug_report.yml
-│  │  └─ feature_request.yml
-│  └─ pull_request_template.md
-├─ .env.example
-└─ README.md
-```
-
----
-
-## 14. 향후 과제
+## 10. 향후 과제
 
 * 푸시 알림(모바일/PWA) 정교화, 다자녀 프로필 지원
 * 의료기관/약국 실시간 혼잡도·대기시간 연동
@@ -340,7 +185,7 @@ docker compose up -d --build
 
 ---
 
-## 한줄 회고록
+## 11. 한줄 회고록
 * 김민균:
 * 김세한:
 * 김수현:
