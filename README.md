@@ -62,7 +62,7 @@
 
 ## 3. WBS
 
-
+<img width="1641" height="479" alt="image" src="https://github.com/user-attachments/assets/c5080a65-dbca-4bd3-a854-0b8f134f5b19" />
 
 ---
 ## 4. 기술 스택 & 사용 모델
