@@ -40,7 +40,7 @@
 
 * 챗봇 **도담이**를 통해 질문-답변을 **빠르게 제공**
 * 신뢰 가능한 출처 기반 응답(출처/갱신일 표시)
-* 로그인/회원가입으로 **개인화 기본 토대** 제공 (향후 알림/히스토리 확장 대비)
+* 로그인/회원가입으로 **개인화 기본 토대** 제공
 
 ### 2-3) 범위(Scope)
 
@@ -55,47 +55,49 @@
 ---
 ## 4. 기술 스택 & 사용 모델
 
-**개발 도구**
-[![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?logo=visualstudiocode\&logoColor=white)](#)
-[![Docker](https://img.shields.io/badge/Docker-2496ED?logo=docker\&logoColor=white)](#)
-[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-2496ED?logo=docker\&logoColor=white)](#)
-[![Git](https://img.shields.io/badge/Git-F05032?logo=git\&logoColor=white)](#)
-[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?logo=githubactions\&logoColor=white)](#)
-[![Postman](https://img.shields.io/badge/Postman-FF6C37?logo=postman\&logoColor=white)](#)
+**개발 도구**  
+[![VS Code](https://img.shields.io/badge/VS%20Code-007ACC?style=flat&logo=visualstudiocode&logoColor=white)](#)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white)](#)
+[![Docker Hub](https://img.shields.io/badge/Docker%20Hub-2496ED?style=flat&logo=docker&logoColor=white)](#)
+[![Postman](https://img.shields.io/badge/Postman-FF6C37?style=flat&logo=postman&logoColor=white)](#)
 
-**개발 언어**
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript\&logoColor=white)](#)
-[![Python](https://img.shields.io/badge/Python-3776AB?logo=python\&logoColor=white)](#)
+**개발 언어**  
+[![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)](#)
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=html5&logoColor=white)](#)
 
-**벡터 DB**
-[![FAISS](https://img.shields.io/badge/FAISS-0055FF?logo=vectorworks\&logoColor=white)](#)
+**벡터 DB**  
+[![FAISS](https://img.shields.io/badge/FAISS-00A39B?style=flat&logo=meta&logoColor=white)](#)
 
-**사용하는 모델**
-[![GPT-4o mini](https://img.shields.io/badge/GPT--4o%20mini-412991?logo=openai\&logoColor=white)](#)
-[![text-embedding-3-large](https://img.shields.io/badge/text--embedding--3--large-412991?logo=openai\&logoColor=white)](#)
+**사용하는 모델**  
+[![Embedding: bge-m3](https://img.shields.io/badge/Embedding-bge--m3-4C9EE3?style=flat&logo=huggingface&logoColor=white)](https://huggingface.co/WOOJINIYA/parentcare-bot-bge-m3)
+[![LLM: Qwen2.5-7B](https://img.shields.io/badge/LLM-Qwen2.5--7B-6E56CF?style=flat&logo=huggingface&logoColor=white)](https://huggingface.co/WOOJINIYA/parentcare-bot-qwen2.5-7b)
 
-**서버**
-[![Django](https://img.shields.io/badge/Django-092E20?logo=django\&logoColor=white)](#)
-[![Uvicorn](https://img.shields.io/badge/Uvicorn-1F9AFE?logo=fastapi\&logoColor=white)](#)
-[![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?logo=gunicorn\&logoColor=white)](#)
-[![Nginx](https://img.shields.io/badge/Nginx-009639?logo=nginx\&logoColor=white)](#)
+**서버**  
+[![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat&logo=amazonwebservices&logoColor=white)](#)
+[![Django](https://img.shields.io/badge/Django-092E20?style=flat&logo=django&logoColor=white)](#)
+[![Gunicorn](https://img.shields.io/badge/Gunicorn-499848?style=flat&logo=gunicorn&logoColor=white)](#)
+[![Nginx](https://img.shields.io/badge/Nginx-009639?style=flat&logo=nginx&logoColor=white)](#)
 
-**서비스 제공자**
-[![AWS](https://img.shields.io/badge/AWS-FF9900?logo=amazonwebservices\&logoColor=white)](#)
+**서비스 제공자**  
+[![RunPod](https://img.shields.io/badge/RunPod-2E7D32?style=flat&logo=cloud&logoColor=white)](https://www.runpod.io/console)
+[![FastAPI](https://img.shields.io/badge/FastAPI-009688?style=flat&logo=fastapi&logoColor=white)](#)
 
-**데이터베이스**
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?logo=postgresql\&logoColor=white)](#)
+**데이터베이스**  
+[![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=mysql&logoColor=white)](https://dev.mysql.com/doc/)
 
-**협력 도구**
-[![Slack](https://img.shields.io/badge/Slack-4A154B?logo=slack\&logoColor=white)](#)
-[![Notion](https://img.shields.io/badge/Notion-000000?logo=notion\&logoColor=white)](#)
-[![Figma](https://img.shields.io/badge/Figma-F24E1E?logo=figma\&logoColor=white)](#)
-[![Google Drive](https://img.shields.io/badge/Google%20Drive-4285F4?logo=googledrive\&logoColor=white)](#)
+**협력 도구**  
+[![Notion](https://img.shields.io/badge/Notion-000000?style=flat&logo=notion&logoColor=white)](#)
+[![Figma](https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=figma&logoColor=white)](#)
+[![GitHub](https://img.shields.io/badge/GitHub-000000?style=flat&logo=github&logoColor=white)](https://github.com/)
+[![Discord](https://img.shields.io/badge/Discord-5865F2?style=flat&logo=discord&logoColor=white)](#)
+
 
 
 ---
 
 ## 5. 시스템 구성도
+
+<img width="532" height="305" alt="image" src="https://github.com/user-attachments/assets/f490b0bf-aed4-441c-832b-3b50a4d1801a" />
 
 
 ---
@@ -181,7 +183,7 @@
 * 의료기관/약국 실시간 혼잡도·대기시간 연동
 * 신뢰성 검증(출처) 자동 업데이트 및 변경 알림
 * 챗봇 증강(RAG) 정답률 지표화, 금칙어/응급 가이드 보강
-* 접근성 개선(색대비/키보드 내비/스크린리더)
+* 자유게시판, 국가 지원하는 분류 카테고리 지원
 
 ---
 
@@ -190,4 +192,4 @@
 * 김세한:
 * 김수현:
 * 정의중:
-* 최우진:
+* 최우진: 이번 프로젝트는 육아 정보를 쉽고 빠르게 제공하는 챗봇 웹서비스를 만드는 것을 목표로 진행했습니다. 요구사항 정리와 설계 문서화를 꼼꼼히 했고, Docker와 GPT-4o 같은 최신 기술도 적극 활용했습니다. 하지만 실제 구현과 운영 부분에서는 완성도나 코드 일관성이 조금 아쉬웠습니다. 이 과정을 통해 협업의 중요성과 기술 선택의 현실성, 그리고 운영까지 생각한 설계의 필요성을 느꼈습니다. 결국 좋은 설계와 도전이 있었지만, 서비스 완성도를 높이려면 운영 준비가 더 필요하다는 점을 깨달았습니다.
