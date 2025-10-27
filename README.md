@@ -141,8 +141,9 @@
 ---
 
 ## 5. 시스템 구성도
+![Uploading image.png…]()
 
-<img width="532" height="305" alt="image" src="https://github.com/user-attachments/assets/f490b0bf-aed4-441c-832b-3b50a4d1801a" />
+
 
 
 ---
@@ -225,8 +226,11 @@
 
 ---
 ## 10. 수행 결과
+<img width="1919" height="963" alt="12" src="https://github.com/user-attachments/assets/99cc66a7-d4e3-40e4-9736-7e6ea4c2b06c" />
 
+<img width="1587" height="472" alt="31" src="https://github.com/user-attachments/assets/77078312-ec70-495a-bd5a-c54f12b38590" />
 
+<img width="1573" height="839" alt="1444" src="https://github.com/user-attachments/assets/3cad2611-56db-4b2c-98ab-03ad8ee9b208" />
 
 
 ---
